@@ -5,6 +5,8 @@ import { ThemeProvider } from 'next-themes'
 import '@/styles/globals.css'
 import { UserProvider } from '@/core/contexts/user-context'
 
+import { Toaster } from '@/components/ui/toaster'
+
 const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
@@ -22,6 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <UserProvider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Component {...pageProps} />
+          <Toaster />
         </ThemeProvider>
       </UserProvider>
     </>

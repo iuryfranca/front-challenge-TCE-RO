@@ -23,14 +23,14 @@ const CardUser = ({ user }: { user: UserProps }) => {
               tabIndex={1}
             >
               <div className="flex h-full w-[112px] items-center justify-center rounded-lg border-2 border-slate-200 bg-white dark:border-slate-300"></div>
-              <div className="grid h-full grid-cols-4 px-2">
+              <div className="grid h-full grid-cols-4 gap-4 px-2">
                 <div className="flex flex-col items-start justify-between">
                   <div className="flex w-full flex-col items-start">
                     <span className="text-start text-xs text-slate-500 dark:text-slate-400">
                       Nome
                       <Separator />
                     </span>
-                    <span className="text-start text-base font-semibold md:text-2xl">
+                    <span className="text-start text-base font-semibold md:text-xl">
                       {user.name}
                     </span>
                   </div>
