@@ -13,9 +13,8 @@
 
 ## :dart: About
 
-<p>
-Olá, tudo bem? aqui é o Iury e esse é o projeto front-end do desafio para o projeto da creche do IFRO. Como podem ver, fiz ele em Nextjs, usando radix e tailwindcss, por conta da acessibilidade e da rapidez a api é local, em outro projeto aqui no github também. A aplicação em si lista os usuários da api, cria novos, edita e deleta.
-</p>
+Olá, tudo bem? aqui é o Iury e esse é o projeto front-end do desafio para o projeto da creche do IFRO. Como podem ver, fiz ele em Nextjs, usando radix e tailwindcss, por conta da acessibilidade e da rapidez a api é local, no projeto [BackEnd](https://github.com/iuryfranca/back-challenge-TCE-RO) A aplicação em si lista os usuários da api, cria novos, edita e deleta. Espero que gostem :)
+
    
     
 ## :rocket: Techs
@@ -36,7 +35,7 @@ The following technologies were used in the project:
 
 ```bash
 # Clone this project
-$ git clone https://github.com/iuryfranca/marketplace-challenge-eu-labs.git
+$ git clone https://github.com/iuryfranca/front-challenge-TCE-RO.git
 
 # Install dependencies
 $ yarn install
