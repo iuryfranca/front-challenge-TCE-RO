@@ -37,6 +37,8 @@ type UserContextData = {
   loadingData: boolean
   setLoadingData: Dispatch<SetStateAction<boolean>>
   postNewUser: (newUserData: UserProps) => void
+  deleteUser: (id: number) => void
+  editUser: (id: number, newUserData: UserProps) => void
 }
 
 export const UserContext = createContext({} as UserContextData)
@@ -71,11 +73,65 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
       .post(`/users`, {
         ...newUserData,
       })
-      .then(async (response) => {
-        setUserList(await response.data)
+      .then(async () => {
+        await getAllUsers()
         toast({
           title: 'Sucesso!',
           description: 'Usuário cadastrado com sucesso',
+          variant: 'default',
+          action: <ToastAction altText="Notificação">Okay!</ToastAction>,
+        })
+      })
+      .catch((err) => {
+        const apiLocalError = err?.response?.data
+        toast({
+          title: `${apiLocalError?.statusCode} | ${apiLocalError?.error}`,
+          description: apiLocalError?.message,
+          variant: 'destructive',
+          action: <ToastAction altText="Notificação">Okay!</ToastAction>,
+        })
+      })
+      .finally(() => {
+        setLoadingData(false)
+      })
+  }
+
+  function deleteUser(id: number) {
+    setLoadingData(true)
+    api
+      .delete(`/users/${id}`)
+      .then(async () => {
+        await getAllUsers()
+        toast({
+          title: 'Sucesso!',
+          description: 'Usuário deletado com sucesso',
+          variant: 'default',
+          action: <ToastAction altText="Notificação">Okay!</ToastAction>,
+        })
+      })
+      .catch((err) => {
+        const apiLocalError = err?.response?.data
+        toast({
+          title: `${apiLocalError?.statusCode} | ${apiLocalError?.error}`,
+          description: apiLocalError?.message,
+          variant: 'destructive',
+          action: <ToastAction altText="Notificação">Okay!</ToastAction>,
+        })
+      })
+      .finally(() => {
+        setLoadingData(false)
+      })
+  }
+
+  function editUser(id: number, newUserData: UserProps) {
+    setLoadingData(true)
+    api
+      .put(`/users/${id}`, { ...newUserData })
+      .then(async () => {
+        await getAllUsers()
+        toast({
+          title: 'Sucesso!',
+          description: 'Usuário deletado com sucesso',
           variant: 'default',
           action: <ToastAction altText="Notificação">Okay!</ToastAction>,
         })
@@ -105,6 +161,8 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
         loadingData,
         setLoadingData,
         postNewUser,
+        deleteUser,
+        editUser,
       }}
     >
       {children}

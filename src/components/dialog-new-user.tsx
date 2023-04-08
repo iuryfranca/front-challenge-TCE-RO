@@ -1,9 +1,10 @@
 'use client'
 
-import { useUserContext } from '@/core/contexts/user-context'
-import { useToast } from '@/hooks/use-toast'
-import { Plus } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { UserProps, useUserContext } from '@/core/contexts/user-context'
+import { Edit3, Plus } from 'lucide-react'
 
+import { formatShortDate } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -16,11 +17,20 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ToastAction } from './ui/toast'
 
-export function DialogNewUser() {
-  const { postNewUser } = useUserContext()
-  const handlerFormLogin = (e: React.SyntheticEvent) => {
+export function DialogNewUser({
+  isNew = true,
+  userDataProps,
+}: {
+  isNew?: boolean
+  userDataProps?: UserProps
+}) {
+  const { postNewUser, editUser } = useUserContext()
+  const [userData, setUserData] = useState<UserProps>(
+    userDataProps ? userDataProps : ({} as UserProps)
+  )
+
+  const handlerForm = (e: React.SyntheticEvent) => {
     e.preventDefault()
     const target = e.target as typeof e.target & {
       name: { value: string }
@@ -54,17 +64,19 @@ export function DialogNewUser() {
       state: target.state.value ? target.state.value : '',
     }
 
-    postNewUser(dataNewUser)
+    if (isNew) {
+      postNewUser(dataNewUser)
+    } else {
+      editUser(userDataProps.id, userDataProps)
+    }
   }
-
-  const { toast } = useToast()
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default" className="gap-2">
-          <Plus size={20} />
-          Novo usuário
+        <Button variant={isNew ? 'default' : 'ghost'} className="gap-2">
+          {isNew ? <Plus size={20} /> : <Edit3 />}
+          {isNew ? 'Novo usuário' : 'Editar'}
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -74,7 +86,7 @@ export function DialogNewUser() {
             O que acha que adicionar mais uma pessoa a nossa listagem? 😉
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handlerFormLogin}>
+        <form onSubmit={handlerForm}>
           <div className="flex flex-row flex-wrap gap-4 py-4">
             <div className="flex flex-row gap-2">
               <div className="flex flex-col items-start justify-center gap-1">
@@ -85,6 +97,7 @@ export function DialogNewUser() {
                   id="name"
                   placeholder="Iury França"
                   className="col-span-3"
+                  value={userDataProps?.name}
                 />
               </div>
               <div className="flex flex-col items-start justify-center gap-1">
@@ -95,6 +108,7 @@ export function DialogNewUser() {
                   id="affiliation"
                   placeholder="Pai do Iury"
                   className="col-span-3"
+                  value={userDataProps?.affiliation}
                 />
               </div>
             </div>
@@ -107,6 +121,11 @@ export function DialogNewUser() {
                   id="dateOfBirth"
                   placeholder="xx/xx/xxxx"
                   className="col-span-3"
+                  value={
+                    userDataProps?.dateOfBirth
+                      ? formatShortDate(userDataProps?.dateOfBirth)
+                      : ''
+                  }
                 />
               </div>
               <div className="flex flex-col items-start justify-center gap-1">
@@ -117,6 +136,7 @@ export function DialogNewUser() {
                   id="cpf"
                   placeholder="xxx.xxx.xxx-xx"
                   className="col-span-3"
+                  value={userDataProps?.cpf}
                 />
               </div>
             </div>
@@ -129,6 +149,7 @@ export function DialogNewUser() {
                   id="phone"
                   placeholder="(xx)xxxxx-xxxx"
                   className="col-span-3"
+                  value={userDataProps?.phone}
                 />
               </div>
               <div className="flex flex-col items-start justify-center gap-1">
@@ -139,6 +160,7 @@ export function DialogNewUser() {
                   id="email"
                   placeholder="iury@exemple.com"
                   className="col-span-3"
+                  value={userDataProps?.email}
                 />
               </div>
             </div>
@@ -155,6 +177,7 @@ export function DialogNewUser() {
                   id="cep"
                   placeholder="xxxxx-xxx"
                   className="col-span-3"
+                  value={userDataProps?.cep}
                 />
               </div>
               <div className="flex flex-row gap-2">
@@ -166,6 +189,7 @@ export function DialogNewUser() {
                     id="street"
                     placeholder="Rua do Iury"
                     className="col-span-3"
+                    value={userDataProps?.street}
                   />
                 </div>
                 <div className="flex flex-col items-start justify-center gap-1">
@@ -176,6 +200,7 @@ export function DialogNewUser() {
                     id="numberHouse"
                     placeholder="xxxx"
                     className="col-span-3"
+                    value={userDataProps?.numberHouse}
                   />
                 </div>
               </div>
@@ -188,6 +213,7 @@ export function DialogNewUser() {
                     id="neighborhood"
                     placeholder="Bairro do Iury"
                     className="col-span-3"
+                    value={userDataProps?.neighborhood}
                   />
                 </div>
               </div>
@@ -200,6 +226,7 @@ export function DialogNewUser() {
                     id="city"
                     placeholder="Ji-Paraná"
                     className="col-span-3"
+                    value={userDataProps?.city}
                   />
                 </div>
                 <div className="flex flex-col items-start justify-center gap-1">
@@ -210,6 +237,7 @@ export function DialogNewUser() {
                     id="state"
                     placeholder="Rondonia"
                     className="col-span-3"
+                    value={userDataProps?.state}
                   />
                 </div>
               </div>

@@ -1,7 +1,8 @@
-import { UserProps } from '@/core/contexts/user-context'
+import { UserProps, useUserContext } from '@/core/contexts/user-context'
 import { Edit3, Trash2 } from 'lucide-react'
 
 import { formatLongDate } from '@/lib/utils'
+import { DialogNewUser } from './dialog-new-user'
 import {
   Accordion,
   AccordionContent,
@@ -12,6 +13,7 @@ import { Button } from './ui/button'
 import { Separator } from './ui/separator'
 
 const CardUser = ({ user }: { user: UserProps }) => {
+  const { deleteUser, editUser } = useUserContext()
   return (
     <>
       <Accordion type="single" collapsible>
@@ -149,12 +151,13 @@ const CardUser = ({ user }: { user: UserProps }) => {
                 <div className="flex justify-end rounded-md border-2 border-slate-300 bg-slate-200 p-3 dark:border-slate-600 dark:bg-slate-700">
                   <div className="flex flex-col justify-between">
                     <div>
-                      <Button variant="ghost">
-                        <Edit3 size={18} /> <span className="ml-2">Editar</span>
-                      </Button>
+                      <DialogNewUser isNew={false} userDataProps={user} />
                     </div>
                     <div>
-                      <Button variant="ghost">
+                      <Button
+                        variant="ghost"
+                        onClick={() => deleteUser(user.id)}
+                      >
                         <Trash2 size={18} />{' '}
                         <span className="ml-2">Remover</span>
                       </Button>
