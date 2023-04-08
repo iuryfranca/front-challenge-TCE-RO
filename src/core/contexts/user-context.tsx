@@ -131,7 +131,7 @@ export const UserProvider: React.FC<Props> = ({ children }) => {
         await getAllUsers()
         toast({
           title: 'Sucesso!',
-          description: 'Usuário deletado com sucesso',
+          description: 'Usuário editado com sucesso',
           variant: 'default',
           action: <ToastAction altText="Notificação">Okay!</ToastAction>,
         })

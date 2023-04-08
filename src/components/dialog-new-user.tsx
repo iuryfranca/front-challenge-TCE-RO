@@ -30,46 +30,65 @@ export function DialogNewUser({
     userDataProps ? userDataProps : ({} as UserProps)
   )
 
+  const [name, setName] = useState<string>()
+  const [affiliation, setAffiliation] = useState<string>()
+  const [dateOfBirth, setDateOfBirth] = useState<string>()
+  const [cpf, setCpf] = useState<string>()
+  const [email, setEmail] = useState<string>()
+  const [phone, setPhone] = useState<string>()
+  const [street, setStreet] = useState<string>()
+  const [numberHouse, setNumberHouse] = useState<string>()
+  const [neighborhood, setNeighborhood] = useState<string>()
+  const [cep, setCep] = useState<string>()
+  const [city, setCity] = useState<string>()
+  const [state, setState] = useState<string>()
+
+  const inicializanteForm = () => {
+    setName(userDataProps.name)
+    setAffiliation(userDataProps.affiliation)
+    setDateOfBirth(formatShortDate(userDataProps.dateOfBirth))
+    setCpf(userDataProps.cpf)
+    setEmail(userDataProps.email)
+    setPhone(userDataProps.phone)
+    setStreet(userDataProps.street)
+    setNumberHouse(userDataProps.numberHouse)
+    setNeighborhood(userDataProps.neighborhood)
+    setCep(userDataProps.cep)
+    setCity(userDataProps.city)
+    setState(userDataProps.state)
+  }
+
   const handlerForm = (e: React.SyntheticEvent) => {
     e.preventDefault()
-    const target = e.target as typeof e.target & {
-      name: { value: string }
-      affiliation: { value: string }
-      dateOfBirth: { value: string }
-      cpf: { value: string }
-      email: { value: string }
-      phone: { value: string }
-      street: { value: string }
-      numberHouse: { value: string }
-      neighborhood: { value: string }
-      cep: { value: string }
-      city: { value: string }
-      state: { value: string }
+    const dataNewUser = {
+      name: name ? name : '',
+      affiliation: affiliation ? affiliation : '',
+      dateOfBirth: new Date(dateOfBirth) ? new Date(dateOfBirth) : new Date(),
+      cpf: cpf ? cpf : '',
+      email: email ? email : '',
+      phone: phone ? phone : '',
+      street: street ? street : '',
+      numberHouse: numberHouse ? numberHouse : '',
+      neighborhood: neighborhood ? neighborhood : '',
+      cep: cep ? cep : '',
+      city: city ? city : '',
+      state: state ? state : '',
     }
 
-    const dataNewUser = {
-      name: target.name.value ? target.name.value : '',
-      affiliation: target.affiliation.value ? target.affiliation.value : '',
-      dateOfBirth: new Date(target.dateOfBirth.value)
-        ? new Date(target.dateOfBirth.value)
-        : new Date(),
-      cpf: target.cpf.value ? target.cpf.value : '',
-      email: target.email.value ? target.email.value : '',
-      phone: target.phone.value ? target.phone.value : '',
-      street: target.street.value ? target.street.value : '',
-      numberHouse: target.numberHouse.value ? target.numberHouse.value : '',
-      neighborhood: target.neighborhood.value ? target.neighborhood.value : '',
-      cep: target.cep.value ? target.cep.value : '',
-      city: target.city.value ? target.city.value : '',
-      state: target.state.value ? target.state.value : '',
-    }
+    console.log(dataNewUser)
 
     if (isNew) {
       postNewUser(dataNewUser)
     } else {
-      editUser(userDataProps.id, userDataProps)
+      editUser(userDataProps.id, dataNewUser)
     }
   }
+
+  useEffect(() => {
+    if (userDataProps) {
+      inicializanteForm()
+    }
+  }, [])
 
   return (
     <Dialog>
@@ -97,7 +116,8 @@ export function DialogNewUser({
                   id="name"
                   placeholder="Iury França"
                   className="col-span-3"
-                  value={userDataProps?.name}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div className="flex flex-col items-start justify-center gap-1">
@@ -108,7 +128,8 @@ export function DialogNewUser({
                   id="affiliation"
                   placeholder="Pai do Iury"
                   className="col-span-3"
-                  value={userDataProps?.affiliation}
+                  value={affiliation}
+                  onChange={(e) => setAffiliation(e.target.value)}
                 />
               </div>
             </div>
@@ -121,11 +142,8 @@ export function DialogNewUser({
                   id="dateOfBirth"
                   placeholder="xx/xx/xxxx"
                   className="col-span-3"
-                  value={
-                    userDataProps?.dateOfBirth
-                      ? formatShortDate(userDataProps?.dateOfBirth)
-                      : ''
-                  }
+                  value={dateOfBirth ? formatShortDate(dateOfBirth) : ''}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
                 />
               </div>
               <div className="flex flex-col items-start justify-center gap-1">
@@ -136,7 +154,8 @@ export function DialogNewUser({
                   id="cpf"
                   placeholder="xxx.xxx.xxx-xx"
                   className="col-span-3"
-                  value={userDataProps?.cpf}
+                  value={cpf}
+                  onChange={(e) => setCpf(e.target.value)}
                 />
               </div>
             </div>
@@ -149,7 +168,8 @@ export function DialogNewUser({
                   id="phone"
                   placeholder="(xx)xxxxx-xxxx"
                   className="col-span-3"
-                  value={userDataProps?.phone}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
               <div className="flex flex-col items-start justify-center gap-1">
@@ -160,7 +180,8 @@ export function DialogNewUser({
                   id="email"
                   placeholder="iury@exemple.com"
                   className="col-span-3"
-                  value={userDataProps?.email}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
             </div>
@@ -177,7 +198,8 @@ export function DialogNewUser({
                   id="cep"
                   placeholder="xxxxx-xxx"
                   className="col-span-3"
-                  value={userDataProps?.cep}
+                  value={cep}
+                  onChange={(e) => setCep(e.target.value)}
                 />
               </div>
               <div className="flex flex-row gap-2">
@@ -189,7 +211,8 @@ export function DialogNewUser({
                     id="street"
                     placeholder="Rua do Iury"
                     className="col-span-3"
-                    value={userDataProps?.street}
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col items-start justify-center gap-1">
@@ -200,7 +223,8 @@ export function DialogNewUser({
                     id="numberHouse"
                     placeholder="xxxx"
                     className="col-span-3"
-                    value={userDataProps?.numberHouse}
+                    value={numberHouse}
+                    onChange={(e) => setNumberHouse(e.target.value)}
                   />
                 </div>
               </div>
@@ -213,7 +237,8 @@ export function DialogNewUser({
                     id="neighborhood"
                     placeholder="Bairro do Iury"
                     className="col-span-3"
-                    value={userDataProps?.neighborhood}
+                    value={neighborhood}
+                    onChange={(e) => setNeighborhood(e.target.value)}
                   />
                 </div>
               </div>
@@ -226,7 +251,8 @@ export function DialogNewUser({
                     id="city"
                     placeholder="Ji-Paraná"
                     className="col-span-3"
-                    value={userDataProps?.city}
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col items-start justify-center gap-1">
@@ -237,14 +263,17 @@ export function DialogNewUser({
                     id="state"
                     placeholder="Rondonia"
                     className="col-span-3"
-                    value={userDataProps?.state}
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
                   />
                 </div>
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Cadastrar</Button>
+            <Button type="submit">
+              {isNew ? 'Cadastrar' : 'Editar Cadastro'}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
